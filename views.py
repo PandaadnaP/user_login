@@ -54,10 +54,44 @@ def exercise_selection(request):
         return HttpResponseRedirect('login.html')
 
 def exercise_write(request):
-    return render(request, '../templates/exercise_write.html')
+    if request.user.is_authenticated():
+        question_query = Questions.objects.get(id='1')
+        difficulty_1 = []
+        difficulty_2 = []
+        for i in range(question_query.difficulty):
+            difficulty_1.append(i)
+        for i in range(5 - question_query.difficulty):
+            difficulty_2.append(i)
+        question = {
+            'difficulty_1': difficulty_1,
+            'difficulty_2': difficulty_2,
+            'create_date': question_query.created_at,
+            'description': question_query.description,
+            'answer': question_query.answer
+        }
+        return render(request, '../templates/exercise_write.html', {'question': question})
+    else:
+        return HttpResponseRedirect('login.html')
 
 def exercise_calculation(request):
-    return render(request, '../templates/exercise_calculation.html')
+    if request.user.is_authenticated():
+        question_query = Questions.objects.get(id='1')
+        difficulty_1 = []
+        difficulty_2 = []
+        for i in range(question_query.difficulty):
+            difficulty_1.append(i)
+        for i in range(5 - question_query.difficulty):
+            difficulty_2.append(i)
+        question = {
+            'difficulty_1': difficulty_1,
+            'difficulty_2': difficulty_2,
+            'create_date': question_query.created_at,
+            'description': question_query.description,
+            'answer': question_query.answer
+        }
+        return render(request, '../templates/exercise_calculation.html', {'question': question})
+    else:
+        return HttpResponseRedirect('login.html')
 
 def login_page(request):
     if request.method == 'POST':
@@ -84,4 +118,25 @@ def logout_page(request):
     return HttpResponseRedirect('home_page.html')
 
 def user_info(request):
-    return render(request, '../templates/user_info/index.html')
+    return render(request, '../templates/information.html')
+
+def wrong_question_page(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+
+        if form.is_valid():  # 如果提交的数据合法
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('exercise_selection.html')
+            else:
+                # 此处应当返回一个错误给前端，显示用户名或密码错误
+                error = r'<p><p>hahahjK</p></p>'
+                return render(request, '../templates/login.html', {'error_message': error})
+    else:
+        form = LoginForm()
+    return render(request, '../templates/login.html')
+
