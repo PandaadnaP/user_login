@@ -178,13 +178,12 @@ class Questions(models.Model):
         db_table = 'questions'
 
 class WrongQuestions(models.Model):
-    id = models.IntegerField(primary_key=True)
-    userid = models.IntegerField()
-    questionid = models.IntegerField()
+    userid = models.IntegerField(primary_key=True)
+    questionid = models.IntegerField(primary_key=True)
 
-    # class Meta:
-    #     managed = False
-    #     db_table = 'USER_login_wrong_questions'
+    class Meta:
+        managed = False
+        db_table = 'USER_login_wrongquestions'
 
 class Difficulty(models.Model):
     chapterid = models.IntegerField(primary_key=True)
@@ -196,7 +195,6 @@ class Difficulty(models.Model):
         db_table = 'USER_login_difficulty'
 
 class Cut(models.Model):
-    id = models.IntegerField(primary_key=True)
     questionid = models.IntegerField()
     userid = models.IntegerField()
 
