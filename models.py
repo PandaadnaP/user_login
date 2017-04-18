@@ -182,3 +182,24 @@ class WrongQuestions(models.Model):
     userid = models.IntegerField()
     questionid = models.IntegerField()
 
+    # class Meta:
+    #     managed = False
+    #     db_table = 'USER_login_wrong_questions'
+
+class Difficulty(models.Model):
+    chapterid = models.IntegerField(primary_key=True)
+    userid = models.IntegerField(primary_key=True)
+    difficulty_frequency = models.IntegerField(default=100)
+
+    class Meta:
+        managed = False
+        db_table = 'USER_login_difficulty'
+
+class Cut(models.Model):
+    id = models.IntegerField(primary_key=True)
+    questionid = models.IntegerField()
+    userid = models.IntegerField()
+
+    # class Meta:
+    #     managed = False
+    #     db_table = 'USER_login_cut'
